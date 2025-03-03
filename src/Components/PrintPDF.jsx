@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Page, Text, View, Document, StyleSheet, PDFViewer, Image} from '@react-pdf/renderer';
 import {Button, Dialog, IconButton} from "@material-tailwind/react";
 import {PrinterIcon} from "@heroicons/react/24/outline/index.js";
@@ -29,15 +29,16 @@ const RenderPdf=(props)=>{
 const {list}=props
     return (
         <Document>
-            {list?.map((item) => {
+            {props?.list?.map((item) => {
                 return(
                     <Page key={item.id} size="A4"  style={styles.page}>
                         <View      style={styles.section}>
                             {item?.images.map((url,index)=>
-                                <Image cache={true} key={index}
+                                <Image  cache={true} key={index}
                                        style={styles.image}
                                        src={url}
                                 />
+
                             )}
                         </View>
                         <View style={styles.section}>

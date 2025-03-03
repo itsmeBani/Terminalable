@@ -8,7 +8,7 @@ import AddButton from "./Components/AddButton.jsx";
 import Modal from "./Components/Modal.jsx";
 import Form from "./Components/Form.jsx";
 import BaniBot from "./Components/BaniBot.jsx";
-import React, {useContext, useEffect} from "react";
+import React, {useContext, useEffect, useRef} from "react";
 import CalendarContext from "./Context/CalendarContext.jsx";
 import {doc, getDoc} from "firebase/firestore";
 import {db} from "./Services/Firebase-config.js";
@@ -16,12 +16,18 @@ import PrintPDF from "./Components/PrintPDF.jsx";
 import {_UserContext} from "./Context/CurrentUser.jsx";
 
 
+
+
+
 function App() {
+
+
 
 const {changeUsers,activeUser}=useContext(_UserContext)
     return (
         <div className="h-screen p-20 bg-[#191919]">
             <CalendarContext>
+
             <div
                 className=" h-full place-items-center flex justify-between flex-col pt-20 bg-[#292929] relative rounded-xl shadow-md ">
                 <div className={" flex    flex-col "}>
@@ -34,7 +40,6 @@ const {changeUsers,activeUser}=useContext(_UserContext)
                     <PrintPDF/>
 
                         <Calendar/>
-
 
 
                 </div>

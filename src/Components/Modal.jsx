@@ -38,40 +38,50 @@ function Modal(props) {
     const RemoveImage = (index) => {
         setImages(images.filter((items) => items !== images[index]))
     }
-    const convertToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = (error) => reject(error);
-        });
-    };
     const AddReport = async () => {
         const Url = [];
-
+        const formData = new FormData();
         for (let i = 0; i < images.length; i++) {
-            try {
-                const base64 = await convertToBase64(images[i].file);
-                Url.push(base64);
-            } catch (error) {
-                console.log("Error converting image to Base64:", error);
-            }
+            formData.append("files[]", images[i].file);
         }
-
         try {
-            await addDoc(collection(db, "Report"), {
-                description: description,
-                images: Url,  // Store Base64 instead of Firebase URLs
-                date:PendingDate ? PendingDate : serverTimestamp(),
-                author: activeUser
+            const response = await fetch("https://urlimage.dyipspot.com", {
+                method: "POST",
+                body: formData,
             });
 
-            setImages([]);
-            setDescription("")
-            handleOpen();
-        } catch (e) {
-            console.log(e);
+            const data = await response.json();
+            console.log(data?.uploaded_files);
+                await addDoc(collection(db, "Report"), {
+                    description: description,
+                    images:data?.uploaded_files,  // Store Base64 instead of Firebase URLs
+                    date:PendingDate ? PendingDate : serverTimestamp(),
+                    author: activeUser
+                });
+
+                setImages([]);
+                setDescription("")
+                handleOpen();
+
+        } catch (error) {
+            console.error("Error uploading files:", error);
         }
+
+
+        // try {
+        //     await addDoc(collection(db, "Report"), {
+        //         description: description,
+        //         images: Url,  // Store Base64 instead of Firebase URLs
+        //         date:PendingDate ? PendingDate : serverTimestamp(),
+        //         author: activeUser
+        //     });
+        //
+        //     setImages([]);
+        //     setDescription("")
+        //     handleOpen();
+        // } catch (e) {
+        //     console.log(e);
+        // }
     };
 
 
@@ -91,12 +101,12 @@ function Modal(props) {
                     <Typography className="mt-1 text-[12px] font-normal text-white/60">
                         Keep your records up-to-date and organized.
                     </Typography>
-                    <Typography className="mt-1 text-[12px] font-normal text-white">
+                    <Typography   className="mt-1 text-[12px] font-normal text-white">
                         {PendingDate && (new Date(PendingDate).toLocaleDateString('en-US', {
                             month: "long",
                             day: "numeric",
                             year: "numeric",
-                        }))}
+                        }))}.
                     </Typography>
                     <IconButton
                         size="sm"

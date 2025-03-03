@@ -50,3 +50,17 @@
     fill: #00e673;
 }
 
+@media print {
+    @page {
+        size: A4;
+        margin: 1cm;
+    }
+
+    .printable-content {
+        font-size: 14px;
+    }
+
+    .page-break {
+        page-break-before: always;
+    }
+}
