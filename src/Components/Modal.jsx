@@ -39,7 +39,6 @@ function Modal(props) {
         setImages(images.filter((items) => items !== images[index]))
     }
     const AddReport = async () => {
-        const Url = [];
         const formData = new FormData();
         for (let i = 0; i < images.length; i++) {
             formData.append("files[]", images[i].file);
@@ -49,39 +48,20 @@ function Modal(props) {
                 method: "POST",
                 body: formData,
             });
-
             const data = await response.json();
-            console.log(data?.uploaded_files);
                 await addDoc(collection(db, "Report"), {
                     description: description,
                     images:data?.uploaded_files,  // Store Base64 instead of Firebase URLs
                     date:PendingDate ? PendingDate : serverTimestamp(),
                     author: activeUser
                 });
-
                 setImages([]);
                 setDescription("")
                 handleOpen();
-
         } catch (error) {
             console.error("Error uploading files:", error);
         }
 
-
-        // try {
-        //     await addDoc(collection(db, "Report"), {
-        //         description: description,
-        //         images: Url,  // Store Base64 instead of Firebase URLs
-        //         date:PendingDate ? PendingDate : serverTimestamp(),
-        //         author: activeUser
-        //     });
-        //
-        //     setImages([]);
-        //     setDescription("")
-        //     handleOpen();
-        // } catch (e) {
-        //     console.log(e);
-        // }
     };
 
 
@@ -93,7 +73,7 @@ function Modal(props) {
     return (
         <>
 
-            <Dialog size="sm" open={open} handler={handleOpen} className="p-4 bg-[#212121] ">
+            <Dialog size="lg" open={open} handler={handleOpen} className="p-4 bg-[#212121] ">
                 <DialogHeader className=" m-0 block ">
                     <Typography variant="h4" color="white">
                         Terminal Report
@@ -106,7 +86,7 @@ function Modal(props) {
                             month: "long",
                             day: "numeric",
                             year: "numeric",
-                        }))}.
+                        }))}
                     </Typography>
                     <IconButton
                         size="sm"

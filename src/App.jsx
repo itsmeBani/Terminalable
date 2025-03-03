@@ -25,17 +25,17 @@ function App() {
 
 const {changeUsers,activeUser}=useContext(_UserContext)
     return (
-        <div className="h-screen p-20 bg-[#191919]">
+        <div className="h-[100dvh] p-3 lg:p-20 bg-[#191919]">
             <CalendarContext>
 
             <div
-                className=" h-full place-items-center flex justify-between flex-col pt-20 bg-[#292929] relative rounded-xl shadow-md ">
+                className=" h-full place-items-center flex justify-between flex-col pt-10 bg-[#292929] relative rounded-xl shadow-md ">
                 <div className={" flex    flex-col "}>
 
 
                  <div className="gap-1 flex">
-                     <Button onClick={()=>changeUsers("xavier")}      variant={activeUser === "xavier" ? "gradient" : "outlined"} color={"indigo"}>Xavier</Button>
-                     <Button onClick={()=>changeUsers("bani")}  variant={activeUser === "bani" ? "gradient" : "outlined"}  color="indigo">Bani</Button>
+                     <Button onClick={()=>changeUsers("xavier")}  className="text-[10px] lg:text-[12px] px-3 py-2 lg:px-4 lg:py-3"    variant={activeUser === "xavier" ? "gradient" : "outlined"} color={"indigo"}>Xavier</Button>
+                     <Button onClick={()=>changeUsers("bani")} className="text-[10px] lg:text-[12px] px-3 py-2 lg:px-4 lg:py-3"   variant={activeUser === "bani" ? "gradient" : "outlined"}  color="indigo">Bani</Button>
                  </div>
                     <PrintPDF/>
 

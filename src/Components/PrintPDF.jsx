@@ -58,7 +58,7 @@ function PrintPdf(props) {
     return (
 
         <div className={"flex   w-full place-content-end "}>
-            <IconButton onClick={()=>setOpen(!open)} className={"text-[10px] flex place-items-center gap-2"} color={"blue"}><PrinterIcon className={"w-7 h-7"}/></IconButton>
+            <IconButton onClick={()=>setOpen(!open)} className={"text-[10px] flex place-items-center gap-2"} color={"blue"}><PrinterIcon className={"w-5 lg:w-7 lg:h-7 h-5 "}/></IconButton>
 
             <Dialog size="lg" open={open}  handler={()=>setOpen(!open)} className="p-4  h-full bg-[#212121] ">
                 <PDFViewer className="h-full w-full">
