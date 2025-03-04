@@ -12,10 +12,10 @@ import {
 import {PhotoIcon, XMarkIcon} from "@heroicons/react/24/outline";
 import {_FormContext} from "../FormContext.jsx";
 import BaniBot from "./BaniBot.jsx";
-import {db, storage} from "../Services/Firebase-config.js";
-import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
+import {db} from "../Services/Firebase-config.js";
 
-import { collection, addDoc,serverTimestamp,getDocs,query,where } from "firebase/firestore";
+
+import { collection, addDoc,serverTimestamp} from "firebase/firestore";
 import {_UserContext} from "../Context/CurrentUser.jsx";
 import {_CalendarContext} from "../Context/CalendarContext.jsx";
 
@@ -25,10 +25,10 @@ function Modal(props) {
     const {activeUser}=useContext(_UserContext)
     const ImageRef = useRef()
     const [images, setImages] = useState([])
+    const [loading,setLoading] = useState(false)
     const PickImage = () => {
         ImageRef.current.click();
     }
-
     const handleImageValue = async (e) => {
         const files = Array.from(e.target.files);
         const newImages = files.map((file) => ({id: URL.createObjectURL(file), file}));
@@ -39,6 +39,7 @@ function Modal(props) {
         setImages(images.filter((items) => items !== images[index]))
     }
     const AddReport = async () => {
+        setLoading(true)
         const formData = new FormData();
         for (let i = 0; i < images.length; i++) {
             formData.append("files[]", images[i].file);
@@ -58,6 +59,7 @@ function Modal(props) {
                 setImages([]);
                 setDescription("")
                 handleOpen();
+                setLoading(false)
         } catch (error) {
             console.error("Error uploading files:", error);
         }
@@ -103,7 +105,7 @@ function Modal(props) {
                         <div className="h-20 aspect-square w-20 shadow-2xl">
                             <input multiple onChange={handleImageValue} type="file" className={"hidden"}
                                    ref={ImageRef}/>
-                            <Button onClick={PickImage} className="flex h-full w-full" variant="gradient">
+                            <Button  onClick={PickImage} className="flex h-full w-full" variant="gradient">
                                 <PhotoIcon className="text white " color="white"/>
                             </Button>
 
@@ -144,7 +146,7 @@ function Modal(props) {
                     <BaniBot/>
                 </div>
                 <DialogFooter>
-                    <Button className="ml-auto" disabled={!description || !images} i onClick={AddReport}>
+                    <Button className="ml-auto" disabled={!description || !images || loading} loading={loading} i onClick={AddReport}>
                         Save
                     </Button>
                 </DialogFooter>
