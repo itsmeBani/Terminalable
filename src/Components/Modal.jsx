@@ -18,11 +18,13 @@ import {db} from "../Services/Firebase-config.js";
 import { collection, addDoc,serverTimestamp} from "firebase/firestore";
 import {_UserContext} from "../Context/CurrentUser.jsx";
 import {_CalendarContext} from "../Context/CalendarContext.jsx";
+import useFetchReports from "../CustomHooks/useFetchReports.jsx";
 
 function Modal(props) {
     const {PendingDate,setPendingDate} = useContext(_CalendarContext)
     const {handleOpen, open, description, setDescription} = useContext(_FormContext)
-    const {activeUser}=useContext(_UserContext)
+    const {activeUser,refresh,setRefresh}=useContext(_UserContext)
+
     const ImageRef = useRef()
     const [images, setImages] = useState([])
     const [loading,setLoading] = useState(false)
@@ -60,8 +62,12 @@ function Modal(props) {
                 setDescription("")
                 handleOpen();
                 setLoading(false)
+            setRefresh((prev) => !prev); // ✅
+
         } catch (error) {
             console.error("Error uploading files:", error);
+            setLoading(false)
+            alert("try again")
         }
 
     };

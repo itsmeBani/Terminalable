@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Page, Text, View, Document, StyleSheet, PDFViewer, Image, Font, PDFDownloadLink} from '@react-pdf/renderer';
 import {Button, Dialog, IconButton} from "@material-tailwind/react";
 import {CloudArrowDownIcon, PrinterIcon} from "@heroicons/react/24/outline/index.js";
-import useFetchReports from "../CustomHooks/useFetchReports.js";
+import useFetchReports from "../CustomHooks/useFetchReports.jsx";
 import {_UserContext} from "../Context/CurrentUser.jsx";
 Font.register({
     family: 'Oswald',
@@ -80,7 +80,7 @@ const {list}=props
 }
 function PrintPdf(props) {
     const [open,setOpen]=useState(false)
-    const { reports, loading, error } = useFetchReports();
+    const { reports, loading, error ,refresh} = useFetchReports();
 
 
     return (
@@ -95,8 +95,7 @@ function PrintPdf(props) {
 
             </Dialog>
             <PDFDownloadLink document={<RenderPdf list={reports}/>} fileName="report.pdf">
-                {({ blob, url, loading, error }) =>
-                    loading ? 'Loading document...' : <IconButton color="green"><CloudArrowDownIcon className={"w-5 lg:w-7 lg:h-7 h-5 "}/></IconButton>
+                {({ blob, url, loading, error }) =>  <IconButton disabled={loading} color="green"><CloudArrowDownIcon className={"w-5 lg:w-7 lg:h-7 h-5 "}/></IconButton>
                 }
             </PDFDownloadLink>
             <div>

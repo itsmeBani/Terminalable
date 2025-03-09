@@ -7,16 +7,16 @@ export const _UserContext =createContext({})
 
 function UserContext({children}) {
 const [activeUser,setActiveUser] =useState("bani")
-
+    const [refresh,setRefresh] = useState(true)
 
 
 
     const changeUsers=(author)=>{
-
     setActiveUser(author)
     }
+
     return (
-    <_UserContext.Provider value={{activeUser,changeUsers}}>
+    <_UserContext.Provider value={{activeUser,changeUsers,refresh,setRefresh}}>
         {children}
     </_UserContext.Provider>
     )
