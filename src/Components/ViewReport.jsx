@@ -22,7 +22,7 @@ function ViewReport(props) {
     const [loadingImageUpdate,setLoadingImageUpdate] = useState(false)
     const [loadingUpdate,setLoadingUpdate] = useState(false)
     const UpdateReport = async () => {
-        setLoadingUpdate(false)
+        setLoadingUpdate(true)
         const docRef = doc(db, "Report", selectedReport?.[0]?.id); // Reference the document
         try {
             await updateDoc(docRef, {
