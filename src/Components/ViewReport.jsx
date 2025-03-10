@@ -20,12 +20,15 @@ function ViewReport(props) {
     const {setRefresh} = useContext(_UserContext)
     const ImageRef = useRef()
     const [loadingImageUpdate,setLoadingImageUpdate] = useState(false)
+    const [loadingUpdate,setLoadingUpdate] = useState(false)
     const UpdateReport = async () => {
+        setLoadingUpdate(false)
         const docRef = doc(db, "Report", selectedReport?.[0]?.id); // Reference the document
         try {
             await updateDoc(docRef, {
                 description: fetchDescription,
             });
+            setLoadingUpdate(false)
             setOpen(false)
         } catch (error) {
             console.error("Error updating document:", error);
@@ -129,7 +132,7 @@ function ViewReport(props) {
                                 <div>
                                     <Button  className={"text-[9px] p-3 lg:text-[11px]"}  disabled={loadingImageUpdate} onClick={HandleInsertImage}>Insert Image</Button>
                                     <Button  className={"text-[9px] p-3 lg:text-[11px]"} onClick={handleOpen}>Close</Button>
-                                    <Button  className={"text-[9px] p-3 lg:text-[11px]"} onClick={UpdateReport}>Save</Button>
+                                    <Button  className={"text-[9px] p-3 lg:text-[11px]"} loading={loadingUpdate} onClick={UpdateReport}>Save</Button>
                                 </div>
 
                             </div>
