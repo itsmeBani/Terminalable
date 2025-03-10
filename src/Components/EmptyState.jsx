@@ -10,7 +10,7 @@ const EmptyState = () => {
     return (
         <div className="w-full  py-10 flex items-center flex-wrap justify-center gap-10">
             {["text-base"].map((textSize, index) => {
-                const h2 = <> There’s no Documenta</>;
+                const h2 = <> There’s no Documentation</>;
                 return (
                     <div key={index} className="grid gap-4 w-60">
                         <div
@@ -31,7 +31,7 @@ const EmptyState = () => {
                         </div>
                         <div>
                             <h2 className={`text-center text-white ${textSize} font-semibold leading-relaxed pb-1`}>
-                                {h2}tion
+                                {h2}
                             </h2>
                             <p className="text-center text-white/70  text-sm font-normal leading-snug pb-4">
                                 Try adding documentation to keep track of your daily task. <br/>

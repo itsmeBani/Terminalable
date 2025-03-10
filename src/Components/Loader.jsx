@@ -2,12 +2,14 @@ import {Button, Card, CardBody, CardFooter, CardHeader, Typography} from "@mater
 
 
 export function CardPlacehoderSkeleton() {
+    const width=window.innerWidth
+
     return (
         <Card className="w-full bg-transparent shadow-none animate-pulse">
-<div className="grid grid-cols-3">
+<div className="grid lg:grid-cols-3 sm:grid-cols-1">
 
-    {Array.from({length:3}).map(()=>
-        <CardHeader
+    {Array.from({length:width < 600 ? 1 : 3}).map((index)=>
+        <CardHeader key={index}
             shadow={false}
             floated={false}
             className="relative grid h-56 place-items-center bg-[#121212]"

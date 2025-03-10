@@ -127,7 +127,7 @@ function ViewReport(props) {
                                 <Button onClick={DeleteReport} color={"red"}
                                         className={"bg-unset  hover:shadow-none shadow-none text-red-500"}>Delete</Button>
                                 <div>
-                                    <Button disabled={loadingImageUpdate} onClick={HandleInsertImage}>Insert Image</Button>
+                                    <Button  disabled={loadingImageUpdate} onClick={HandleInsertImage}>Insert Image</Button>
                                     <Button onClick={handleOpen}>Close</Button>
                                     <Button onClick={UpdateReport}>Save</Button>
                                 </div>
