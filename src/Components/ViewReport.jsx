@@ -125,11 +125,11 @@ function ViewReport(props) {
                                    ref={ImageRef} accept={"image/*"}/>
                             <div className="w-full flex justify-between">
                                 <Button onClick={DeleteReport} color={"red"}
-                                        className={"bg-unset  hover:shadow-none shadow-none text-red-500"}>Delete</Button>
+                                        className={"bg-unset text-[9px] lg:text-[11px] p-3 hover:shadow-none shadow-none text-red-500"}>Delete</Button>
                                 <div>
-                                    <Button  disabled={loadingImageUpdate} onClick={HandleInsertImage}>Insert Image</Button>
-                                    <Button onClick={handleOpen}>Close</Button>
-                                    <Button onClick={UpdateReport}>Save</Button>
+                                    <Button  className={"text-[9px] p-3 lg:text-[11px]"}  disabled={loadingImageUpdate} onClick={HandleInsertImage}>Insert Image</Button>
+                                    <Button  className={"text-[9px] p-3 lg:text-[11px]"} onClick={handleOpen}>Close</Button>
+                                    <Button  className={"text-[9px] p-3 lg:text-[11px]"} onClick={UpdateReport}>Save</Button>
                                 </div>
 
                             </div>
