@@ -101,7 +101,7 @@ function ViewReport(props) {
                     className="p-4 bg-[#212121] flex flex-col overflow-auto gap-5">
 
                 {!loading ? (selectedReport.length > 0 ? <>
-                            <div className={`grid grid-cols-3 gap-2`}>
+                            <div className={`grid grid-cols-4  gap-2`}>
                                 {selectedReport?.map((item, index) => (
                                     item?.images.map((image, index) => (
 

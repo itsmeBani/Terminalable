@@ -10,7 +10,8 @@ const useFetchReports = () => {
     const {activeUser,refresh}=useContext(_UserContext)
     const fetchReports = async () => {
         try {
-            const q = query(collection(db, "Report"), where("author", "==", activeUser));
+            const q = query(collection(db, "Report"), where("author", "==", activeUser),
+                orderBy("date", "desc"));
             const querySnapshot = await getDocs(q);
             const items = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setReports(items);
