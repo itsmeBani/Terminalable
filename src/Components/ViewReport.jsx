@@ -32,7 +32,7 @@ function ViewReport(props) {
             setOpen(false)
         } catch (error) {
             console.error("Error updating document:", error);
-        }
+        }x
     }
 
 
@@ -129,10 +129,10 @@ function ViewReport(props) {
                             <div className="w-full flex justify-between">
                                 <Button onClick={DeleteReport} color={"red"}
                                         className={"bg-unset text-[9px] lg:text-[11px] p-3 hover:shadow-none shadow-none text-red-500"}>Delete</Button>
-                                <div>
-                                    <Button  className={"text-[9px] p-3 lg:text-[11px]"}  disabled={loadingImageUpdate} onClick={HandleInsertImage}>Insert Image</Button>
-                                    <Button  className={"text-[9px] p-3 lg:text-[11px]"} onClick={handleOpen}>Close</Button>
-                                    <Button  className={"text-[9px] p-3 lg:text-[11px]"} loading={loadingUpdate} onClick={UpdateReport}>Save</Button>
+                                <div className={"w-full justify-end flex"}>
+                                    <Button  className={"text-[9px] p-3 lg:text-[11px] lg:px-7"}  disabled={loadingImageUpdate} onClick={HandleInsertImage}>Insert Image</Button>
+                                    <Button  className={"text-[9px] p-3 lg:text-[11px] lg:px-7"} onClick={handleOpen}>Close</Button>
+                                    <Button  className={"text-[9px] p-3 lg:text-[11px] lg:px-7"} loading={loadingUpdate} onClick={UpdateReport}>Save</Button>
                                 </div>
 
                             </div>
