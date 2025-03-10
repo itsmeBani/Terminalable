@@ -119,6 +119,17 @@ const RenderPdf = (props) => {
                                 )}
                             </View>
                             <View style={styles.section}>
+                                <Text style={styles.description}>
+
+                                    {item?.date && (
+                                        new Date(item.date.seconds * 1000).toLocaleDateString('en-US', {
+                                            month: "long",
+                                            day: "numeric",
+                                            year: "numeric",
+                                        })
+                                    )}
+
+                                </Text>
                                 <Text style={styles.description}>{item.description || "No Description"}</Text>
                             </View>
 

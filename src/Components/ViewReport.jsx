@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Button, Dialog, DialogHeader, IconButton, Textarea, Typography} from "@material-tailwind/react";
-import {XMarkIcon} from "@heroicons/react/24/outline";
+import {TrashIcon, XMarkIcon} from "@heroicons/react/24/outline";
 import {_CalendarContext} from "../Context/CalendarContext.jsx";
 import EmptyState from "./EmptyState.jsx";
 import {CardPlacehoderSkeleton} from "./Loader.jsx";
@@ -21,18 +21,22 @@ function ViewReport(props) {
     const ImageRef = useRef()
     const [loadingImageUpdate,setLoadingImageUpdate] = useState(false)
     const [loadingUpdate,setLoadingUpdate] = useState(false)
+    const  [selectedImage,setSelectedImage] = useState([])
+
+
     const UpdateReport = async () => {
         setLoadingUpdate(true)
         const docRef = doc(db, "Report", selectedReport?.[0]?.id); // Reference the document
         try {
             await updateDoc(docRef, {
                 description: fetchDescription,
+                images:selectedImage
             });
             setLoadingUpdate(false)
             setOpen(false)
         } catch (error) {
             console.error("Error updating document:", error);
-        }x
+        }
     }
 
 
@@ -56,7 +60,9 @@ function ViewReport(props) {
 
     useEffect(() => {
         setFetchDescription(selectedReport?.[0]?.description)
+        setSelectedImage(selectedReport?.[0]?.images)
     }, [selectedReport]);
+
 
     function HandleInsertImage() {
         ImageRef.current.click()
@@ -93,6 +99,10 @@ function ViewReport(props) {
 
     }
 
+    function DeleteImage(index) {
+        setSelectedImage(prevImages => prevImages.filter((_, index) => index !== 0));
+    }
+
     return (
         <div>
 
@@ -102,19 +112,26 @@ function ViewReport(props) {
 
                 {!loading ? (selectedReport.length > 0 ? <>
                             <div className={`grid grid-cols-4  gap-2`}>
-                                {selectedReport?.map((item, index) => (
-                                    item?.images.map((image, index) => (
+                                { selectedImage?.map((image, index) => (
 
-                                        <div key={index} className="w-full">
+                                        <div key={index} className="w-full relative group">
                                             <img
                                                 className="h-30 w-full rounded-lg object-cover object-center md:h-60"
                                                 src={image}
                                                 alt=""
                                             />
+                                            <div className="absolute inset-0 bg-black bg-opacity-60 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"></div>
+                                            <div className="absolute inset-0 flex items-start justify-end p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                               <IconButton onClick={()=>DeleteImage(index)} className="bg-unset">
+                                                   <TrashIcon className={"h-5 w-5 hover:text-red-400"}/>
+                                               </IconButton>
+                                            </div>
                                         </div>
-                                    ))
 
-                                ))}
+
+                                    ))
+                                }
+
                             </div>
                             <p className="text-white">{new Date(selectedReport[0]?.date.toDate()).toLocaleDateString("en-US", {
                                 month: "long",
@@ -130,9 +147,9 @@ function ViewReport(props) {
                                 <Button onClick={DeleteReport} color={"red"}
                                         className={"bg-unset text-[9px] lg:text-[11px] p-3 hover:shadow-none shadow-none text-red-500"}>Delete</Button>
                                 <div className={"w-full justify-end flex"}>
-                                    <Button  className={"text-[9px] p-3 lg:text-[11px] lg:px-7"}  disabled={loadingImageUpdate} onClick={HandleInsertImage}>Insert Image</Button>
-                                    <Button  className={"text-[9px] p-3 lg:text-[11px] lg:px-7"} onClick={handleOpen}>Close</Button>
-                                    <Button  className={"text-[9px] p-3 lg:text-[11px] lg:px-7"} loading={loadingUpdate} onClick={UpdateReport}>Save</Button>
+                                    <Button  className={"text-[9px] p-3 lg:text-[11px] lg:px-5"}  disabled={loadingImageUpdate} onClick={HandleInsertImage}>Insert Image</Button>
+                                    <Button  className={"text-[9px] p-3 lg:text-[11px] lg:px-5"} onClick={handleOpen}>Cancel</Button>
+                                    <Button  className={"text-[9px] p-3 lg:text-[11px] lg:px-5"} loading={loadingUpdate} onClick={UpdateReport}>Save</Button>
                                 </div>
 
                             </div>
