@@ -7,20 +7,19 @@ import {GoogleGenerativeAI} from "@google/generative-ai";
 import {_FormContext} from "../FormContext.jsx";
 
 
-function BaniBot() {
+function BaniBot({respond,description}) {
     const genAI = new GoogleGenerativeAI("AIzaSyBLrFZFoyrioXZ6A19G-V3h5ji38eNoYRY");
     const model = genAI.getGenerativeModel({
         model: "gemini-1.5-flash",
         systemInstruction: "answer it directly no extra word"
     });
-    const {handleOpen, open, description, setDescription} = useContext(_FormContext)
+
     const [prompt, setPrompt] = useState("")
-    const [message, setMessage] = useState("")
     const [chatHistory, setChatHistory] = useState([
 
         {
             role: "user",
-            parts: [{text: description}],
+            parts: [{text: description || ""}],
         },
         {
             role: "model",
@@ -30,7 +29,7 @@ function BaniBot() {
 
 
 
-    const _try = async () => {
+    const SendRequest = async () => {
 
 
         const chat = model.startChat({
@@ -48,7 +47,8 @@ function BaniBot() {
                 role: "model",
                 parts: [{text: result.response.text()}],
             }])
-        setDescription(result.response.text())
+
+        respond(result.response.text())
         setPrompt("")
     }
 
@@ -75,9 +75,10 @@ function BaniBot() {
                         <div className={"flex w-full gap-3 "}>
                             <input onChange={(e) => HandleMessage(e)}
                                    value={prompt}
+                                   onKeyDown={(e)=>e.key === "Enter" ? SendRequest() : null}
                                    className="flex h-full w-full rounded-md border border-[#e5e7eb] px-3 py-2 text-[11px] placeholder-[#6b7280] focus:outline-none  focus:ring-border-blue-500 disabled:cursor-not-allowed disabled:opacity-50 text-[#030712] focus-visible:ring-offset-2"
                                    placeholder="Type your message"/>
-                            <IconButton onClick={_try} color={"green"} className="px-5">
+                            <IconButton onClick={SendRequest} color={"green"} className="px-5">
                                 <svg className="w-5 h-5 rotate-90" fill="currentColor" viewBox="0 0 20 20"
                                      xmlns="http://www.w3.org/2000/svg">
                                     <path

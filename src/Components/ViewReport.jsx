@@ -7,6 +7,7 @@ import {CardPlacehoderSkeleton} from "./Loader.jsx";
 import {doc, updateDoc, deleteDoc} from "firebase/firestore";
 import {db} from "../Services/Firebase-config.js";
 import {_UserContext} from "../Context/CurrentUser.jsx";
+import BaniBot from "./BaniBot.jsx";
 
 function ViewReport(props) {
 
@@ -143,15 +144,16 @@ function ViewReport(props) {
                                       value={fetchDescription} className="text-white" label="Description"/>
                             <input multiple onChange={(e)=>UpdateImage(e)} type="file" className={"hidden"}
                                    ref={ImageRef} accept={"image/*"}/>
+                        <BaniBot respond={(e)=>setFetchDescription(e)} description={fetchDescription}/>
                             <div className="w-full flex justify-between">
                                 <Button onClick={DeleteReport} color={"red"}
                                         className={"bg-unset text-[9px] lg:text-[11px] p-3 hover:shadow-none shadow-none text-red-500"}>Delete</Button>
+
                                 <div className={"w-full justify-end flex"}>
                                     <Button  className={"text-[9px] p-3 lg:text-[11px] lg:px-5"}  disabled={loadingImageUpdate} onClick={HandleInsertImage}>Insert Image</Button>
                                     <Button  className={"text-[9px] p-3 lg:text-[11px] lg:px-5"} onClick={handleOpen}>Close</Button>
                                     <Button  className={"text-[9px] p-3 lg:text-[11px] lg:px-5"} loading={loadingUpdate} onClick={UpdateReport}>Save</Button>
                                 </div>
-
                             </div>
                         </> :
                         <EmptyState/>

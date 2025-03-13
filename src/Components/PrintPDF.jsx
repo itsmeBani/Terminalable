@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
 
     , description: {
         fontFamily: 'Times-Roman',
-
         fontSize: 11
     }, footer: {
         height: 100,
@@ -75,7 +74,18 @@ textAlign:"center",
         display:"flex"
     },content:{
       flex:1,
-        paddingTop:20
+        display:"flex",
+
+    },textSection:{
+        padding: 10,
+        paddingHorizontal:30,
+        display: "flex",
+        flexDirection: "col",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 10,
+        width:"100%",
+
     }
 });
 
@@ -118,7 +128,7 @@ const RenderPdf = (props) => {
                                     />
                                 )}
                             </View>
-                            <View style={styles.section}>
+                            <View style={styles.textSection}>
                                 <Text style={styles.description}>
 
                                     {item?.date && (

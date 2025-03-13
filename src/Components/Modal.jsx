@@ -149,7 +149,7 @@ function Modal(props) {
 
                 </DialogBody>
                 <div className="z-[60]">
-                    <BaniBot/>
+                    <BaniBot respond={(e)=>setDescription(e)} description={description}/>
                 </div>
                 <DialogFooter>
                     <Button className="ml-auto" disabled={!description || !images || loading} loading={loading} i onClick={AddReport}>
