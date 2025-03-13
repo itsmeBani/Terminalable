@@ -150,7 +150,7 @@ function ViewReport(props) {
                                         className={"bg-unset text-[9px] lg:text-[11px] p-3 hover:shadow-none shadow-none text-red-500"}>Delete</Button>
 
                                 <div className={"w-full justify-end flex"}>
-                                    <Button  className={"text-[9px] p-3 lg:text-[11px] lg:px-5"}  disabled={loadingImageUpdate} onClick={HandleInsertImage}>Insert Image</Button>
+                                    <Button  className={"text-[9px] p-3 lg:text-[11px] lg:px-5"}  disabled={loadingImageUpdate} loading={loadingImageUpdate} onClick={HandleInsertImage}>Insert Image</Button>
                                     <Button  className={"text-[9px] p-3 lg:text-[11px] lg:px-5"} onClick={handleOpen}>Close</Button>
                                     <Button  className={"text-[9px] p-3 lg:text-[11px] lg:px-5"} loading={loadingUpdate} onClick={UpdateReport}>Save</Button>
                                 </div>
