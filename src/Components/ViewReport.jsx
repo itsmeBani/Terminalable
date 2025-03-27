@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {Button, Dialog, DialogHeader, IconButton, Textarea, Typography} from "@material-tailwind/react";
+import {Button, Dialog, DialogHeader, IconButton, Input, Textarea, Typography} from "@material-tailwind/react";
 import {TrashIcon, XMarkIcon} from "@heroicons/react/24/outline";
 import {_CalendarContext} from "../Context/CalendarContext.jsx";
 import EmptyState from "./EmptyState.jsx";
@@ -23,7 +23,7 @@ function ViewReport(props) {
     const [loadingImageUpdate,setLoadingImageUpdate] = useState(false)
     const [loadingUpdate,setLoadingUpdate] = useState(false)
     const  [selectedImage,setSelectedImage] = useState([])
-
+  const [hours,sethours] = useState(0)
 
     const UpdateReport = async () => {
         setLoadingUpdate(true)
@@ -31,7 +31,8 @@ function ViewReport(props) {
         try {
             await updateDoc(docRef, {
                 description: fetchDescription,
-                images:selectedImage
+                images:selectedImage,
+                hours:Number(hours)
             });
             setLoadingUpdate(false)
             setOpen(false)
@@ -113,24 +114,26 @@ function ViewReport(props) {
 
                 {!loading ? (selectedReport.length > 0 ? <>
                             <div className={`grid grid-cols-4  gap-2`}>
-                                { selectedImage?.map((image, index) => (
+                                {selectedImage?.map((image, index) => (
 
-                                        <div key={index} className="w-full relative group">
-                                            <img
-                                                className="h-30 w-full rounded-lg object-cover object-center md:h-60"
-                                                src={image}
-                                                alt=""
-                                            />
-                                            <div className="absolute inset-0 bg-black bg-opacity-60 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"></div>
-                                            <div className="absolute inset-0 flex items-start justify-end p-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                               <IconButton onClick={()=>DeleteImage(index)} className="bg-unset">
-                                                   <TrashIcon className={"h-5 w-5 hover:text-red-400"}/>
-                                               </IconButton>
-                                            </div>
+                                    <div key={index} className="w-full relative group">
+                                        <img
+                                            className="h-30 w-full rounded-lg object-cover object-center md:h-60"
+                                            src={image}
+                                            alt=""
+                                        />
+                                        <div
+                                            className="absolute inset-0 bg-black bg-opacity-60 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"></div>
+                                        <div
+                                            className="absolute inset-0 flex items-start justify-end p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <IconButton onClick={() => DeleteImage(index)} className="bg-unset">
+                                                <TrashIcon className={"h-5 w-5 hover:text-red-400"}/>
+                                            </IconButton>
                                         </div>
+                                    </div>
 
 
-                                    ))
+                                ))
                                 }
 
                             </div>
@@ -142,17 +145,37 @@ function ViewReport(props) {
 
                             <Textarea rows={7} color="blue" onChange={(e) => setFetchDescription(e.target.value)}
                                       value={fetchDescription} className="text-white" label="Description"/>
-                            <input multiple onChange={(e)=>UpdateImage(e)} type="file" className={"hidden"}
+                        <div className="lg:w-[60px] sm:w-full ">
+                            <Input
+                                color="blue"
+                                label="Hours"
+                                type="number"
+                                className="text-white w-unset no-spinner"
+                                min={0}
+                                max={999}
+                                onChange={(e)=>sethours(e.target.value)}
+                                onInput={(e) => {
+                                    e.target.value = e.target.value.replace(/[^0-9]/g, ''); // Only allow digits
+                                }}
+                            />
+                        </div>
+                            <input multiple onChange={(e) => UpdateImage(e)} type="file" className={"hidden"}
                                    ref={ImageRef} accept={"image/*"}/>
-                        <BaniBot respond={(e)=>setFetchDescription(e)} description={fetchDescription}/>
+
+
+                            <BaniBot respond={(e) => setFetchDescription(e)} description={fetchDescription}/>
                             <div className="w-full flex justify-between">
                                 <Button onClick={DeleteReport} color={"red"}
                                         className={"bg-unset text-[9px] lg:text-[11px] p-3 hover:shadow-none shadow-none text-red-500"}>Delete</Button>
 
                                 <div className={"w-full justify-end flex"}>
-                                    <Button  className={"text-[9px] p-3 lg:text-[11px] lg:px-5"}  disabled={loadingImageUpdate} loading={loadingImageUpdate} onClick={HandleInsertImage}>Insert Image</Button>
-                                    <Button  className={"text-[9px] p-3 lg:text-[11px] lg:px-5"} onClick={handleOpen}>Close</Button>
-                                    <Button  className={"text-[9px] p-3 lg:text-[11px] lg:px-5"} loading={loadingUpdate} onClick={UpdateReport}>Save</Button>
+                                    <Button className={"text-[9px] p-3 lg:text-[11px] lg:px-5"}
+                                            disabled={loadingImageUpdate} loading={loadingImageUpdate}
+                                            onClick={HandleInsertImage}>Insert Image</Button>
+                                    <Button className={"text-[9px] p-3 lg:text-[11px] lg:px-5"}
+                                            onClick={handleOpen}>Close</Button>
+                                    <Button className={"text-[9px] p-3 lg:text-[11px] lg:px-5"} loading={loadingUpdate}
+                                            onClick={UpdateReport}>Save</Button>
                                 </div>
                             </div>
                         </> :

@@ -21,7 +21,7 @@ import {_CalendarContext} from "../Context/CalendarContext.jsx";
 import useFetchReports from "../CustomHooks/useFetchReports.jsx";
 
 function Modal(props) {
-    const {PendingDate,setPendingDate} = useContext(_CalendarContext)
+    const {PendingDate,setPendingDate} = useContext(_CalendarContext) //state for the null date or no report
     const {handleOpen, open, description, setDescription} = useContext(_FormContext)
     const {activeUser,refresh,setRefresh}=useContext(_UserContext)
 

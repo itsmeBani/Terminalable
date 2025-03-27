@@ -11,11 +11,11 @@ const useFetchReports = () => {
     const fetchReports = async () => {
         try {
             const q = query(collection(db, "Report"), where("author", "==", activeUser),
-                orderBy("date", "desc"));
+                orderBy("date", "asc"));
             const querySnapshot = await getDocs(q);
             const items = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setReports(items);
-            console.log(reports)
+
         } catch (err) {
             console.log(err)
             setError(err.message);
