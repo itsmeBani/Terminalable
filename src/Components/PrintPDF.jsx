@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
 });
 
 const RenderPdf = (props) => {
-
+const {activeUser}=props
     const {list = []} = props;
 
     const groupedReports = useMemo(() => {
@@ -134,6 +134,27 @@ const RenderPdf = (props) => {
         console.log('Grouped Reports:', weeks);
         return weeks;
     }, [list])||[];
+
+
+
+    const TotalHours = (items) => {
+        if (!items || items.length === 0) return "0:00:00";
+
+        let totalSeconds = items.reduce((sum, item) => {
+            const decimalHours = item?.hours || 0;
+            const hours = Math.floor(decimalHours);
+            const minutesDecimal = (decimalHours - hours) * 100; // Handle .30 as 30 minutes
+            const minutes = Math.floor(minutesDecimal);
+            const seconds = Math.round((minutesDecimal - minutes) * 60);
+            return sum + (hours * 3600) + (minutes * 60) + seconds;
+        }, 0);
+
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        return `${hours}:${minutes.toString().padStart(2, "0")} mins`;
+    };
 
     return (
         <Document>
@@ -166,7 +187,7 @@ const RenderPdf = (props) => {
                 }}>
 
                     <Text style={styles.acc}> ACCOMPLISHMENT REPORT</Text>
-                    <Text style={styles.frontpagetxt}> JIOVANI A. FABRO</Text>
+                    <Text style={styles.frontpagetxt}>{activeUser === "bani"? "JIOVANI A. FABRO":"FRANCIS XAVIER A. RAMOS"}</Text>
 
                     <View style={{alignItems: "center"}}>
                         <Text style={styles.frontpagetxt}>ILOCOS SUR POLYTECHNIC STATE COLLEGE</Text>
@@ -321,7 +342,7 @@ const RenderPdf = (props) => {
                                                 paddingHorizontal: 15,
 
                                             }, styles.fontLight]}>
-                                                <Text style={[styles.description,{fontSize: 13,}]}>Jiovani Fabro</Text>
+                                                <Text style={[styles.description,{fontSize: 13,}]}>{activeUser==="bani"? "JIOVANI A. FABRO":"FRANCIS XAVIER A. RAMOS"}</Text>
                                             </View>
 
                                         </View>
@@ -446,7 +467,7 @@ const RenderPdf = (props) => {
                                                 paddingHorizontal: 15,
                                                 paddingTop: 5,
                                                 textAlign:"center"
-                                            }, styles.fontLight]}>{item?.hours||0}</Text>
+                                            }, styles.fontLight]}>{item?.hours? item?.hours.toFixed(2): 0 }</Text>
                                         </View>
 
                                     })}
@@ -489,7 +510,7 @@ const RenderPdf = (props) => {
                                             paddingHorizontal: 15,
                                             paddingTop: 5,
                                             textAlign:"center"
-                                        }, styles.fontLight]}>{item.reduce((sum, item) => sum + (item.hours || 0), 0)}</Text>
+                                        }, styles.fontLight]}>{TotalHours(item)}</Text>
                                     </View>
 
                                 </View>
@@ -518,9 +539,7 @@ const RenderPdf = (props) => {
 function PrintPdf(props) {
     const [open, setOpen] = useState(false)
     const {reports, loading, error, refresh} = useFetchReports();
-
-    console.log(reports)
-
+    const {activeUser}=useContext(_UserContext)
     return (
 
         <div className={"flex  gap-2 w-full place-content-end "}>
@@ -529,7 +548,7 @@ function PrintPdf(props) {
 
             <Dialog size="lg" open={open} handler={() => setOpen(!open)} className="p-4  h-full bg-[#212121] ">
                 <PDFViewer className="h-full w-full">
-                    <RenderPdf list={reports}/>
+                    <RenderPdf list={reports} activeUser={activeUser}/>
                 </PDFViewer>
 
             </Dialog>

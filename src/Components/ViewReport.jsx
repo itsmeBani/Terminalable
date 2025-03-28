@@ -18,12 +18,12 @@ function ViewReport(props) {
         selectedReport,loading,setLoading,setSelectedReport,FetchCurrentReport
     } = useContext(_CalendarContext)
     const [fetchDescription, setFetchDescription] = useState("")
+    const [fetchHours, setFetchHours] = useState(0)
     const {setRefresh} = useContext(_UserContext)
     const ImageRef = useRef()
     const [loadingImageUpdate,setLoadingImageUpdate] = useState(false)
     const [loadingUpdate,setLoadingUpdate] = useState(false)
     const  [selectedImage,setSelectedImage] = useState([])
-  const [hours,sethours] = useState(0)
 
     const UpdateReport = async () => {
         setLoadingUpdate(true)
@@ -32,7 +32,7 @@ function ViewReport(props) {
             await updateDoc(docRef, {
                 description: fetchDescription,
                 images:selectedImage,
-                hours:Number(hours)
+                hours:Number(fetchHours)
             });
             setLoadingUpdate(false)
             setOpen(false)
@@ -63,6 +63,7 @@ function ViewReport(props) {
     useEffect(() => {
         setFetchDescription(selectedReport?.[0]?.description)
         setSelectedImage(selectedReport?.[0]?.images)
+        setFetchHours(selectedReport?.[0]?.hours)
     }, [selectedReport]);
 
 
@@ -110,7 +111,7 @@ function ViewReport(props) {
 
 
             <Dialog size="lg" open={open} handler={handleOpen}
-                    className="p-4 bg-[#212121] flex flex-col overflow-auto gap-5">
+                    className="p-4 bg-[#212121] flex flex-col overflow-auto gap-2">
 
                 {!loading ? (selectedReport.length > 0 ? <>
                             <div className={`grid grid-cols-4  gap-2`}>
@@ -149,13 +150,11 @@ function ViewReport(props) {
                             <Input
                                 color="blue"
                                 label="Hours"
-                                type="number"
+                                value={fetchHours}
                                 className="text-white w-unset no-spinner"
-                                min={0}
-                                max={999}
-                                onChange={(e)=>sethours(e.target.value)}
+                                onChange={(e)=>setFetchHours(e.target.value)}
                                 onInput={(e) => {
-                                    e.target.value = e.target.value.replace(/[^0-9]/g, ''); // Only allow digits
+                                    e.target.value = e.target.value.replace(/[^\d.]/g, '');
                                 }}
                             />
                         </div>
