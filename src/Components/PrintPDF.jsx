@@ -9,6 +9,7 @@ import headerImage from "../assets/headers style.png"
 import FooterImage from "../assets/fotimg.png"
 import fbfont from "../assets/Derringer DB Bold.ttf"
 import tb from "../assets/Times New Roman Bold.ttf"
+import {Table, TR, TH, TD} from '@ag-media/react-pdf-table';
 
 Font.register({
     family: 'Agent Fb',
@@ -181,6 +182,7 @@ const {activeUser}=props
                     <View style={{width: "100%", height: 2, backgroundColor: "black"}}/>
                 </View>
 
+
                 <View style={{
                     flex: 1, justifyContent: "space-between",
                     alignItems: "center",
@@ -212,9 +214,9 @@ const {activeUser}=props
                 return (
                     <React.Fragment key={index}>
 
-                        <Page key={index} size="A4" style={styles.page}>
+                        <Page key={index} size="A4" style={[styles.page,{paddingBottom:100}]}>
 
-                            <View style={styles.header}>
+                            <View fixed style={styles.header}>
                                 <Image src={headerImage}
                                        style={{width: 130, height: 100, left: 0, top: 0, position: "absolute"}}/>
                                 <View style={styles.subheader}>
@@ -233,7 +235,19 @@ const {activeUser}=props
                             <View style={{width: "100%", height: 3, paddingHorizontal: 100}}>
                                 <View style={{width: "100%", height: 2, backgroundColor: "black"}}/>
                             </View>
+                            {/*<Table wrap={true}  fixed={true} style={{paddingHorizontal:80}}>*/}
+                            {/*    <TH>*/}
+                            {/*        <TD>Header 1</TD>*/}
+                            {/*        <TD>Header 2</TD>*/}
+                            {/*    </TH>*/}
+                            {/*    {Array.from({length:10}).map((index)=>*/}
+                            {/*        <TR fixed={true} key={index}>*/}
+                            {/*            <TD>@david.kucsai/react-pdf-table. This library is designed to be used with @react-pdf/renderer. The goal behind this library is to provide a declarative way of defining tables in a PDF. To get …</TD>*/}
+                            {/*            <TD>Data 2</TD>*/}
+                            {/*        </TR>*/}
 
+                            {/*    )}*/}
+                            {/*</Table>*/}
                             <View style={styles.content}>
                                 <View style={{
                                     width: "100%",
@@ -265,13 +279,13 @@ const {activeUser}=props
                             </View>
 
 
-                            <Image src={FooterImage}
+                            <Image fixed={true} src={FooterImage}
                                    style={{width: 130, height: 100, right: 0, bottom: 0, position: "absolute"}}/>
 
                         </Page>
-                        <Page key={index} size="A4" style={styles.page}>
+                        <Page key={index} size="A4" style={[styles.page,{paddingBottom:100}]}>
 
-                            <View style={styles.header}>
+                            <View style={[styles.header]} fixed={true}>
                                 <Image src={headerImage}
                                        style={{width: 130, height: 100, left: 0, top: 0, position: "absolute"}}/>
                                 <View style={styles.subheader}>
@@ -400,7 +414,7 @@ const {activeUser}=props
                                 </View>
 
 
-                                <View style={{
+                                <View  style={{
                                     paddingHorizontal: 0,
                                     display: "flex",
                                     flexDirection: "column",
@@ -409,7 +423,7 @@ const {activeUser}=props
 
 
                                     {item?.map((item, index) => {
-                                        return <View key={index} style={{
+                                        return <View  key={index} style={{
                                             border: "0px solid black",
                                             display: "flex",
                                             flexDirection: "row",
@@ -458,7 +472,7 @@ const {activeUser}=props
                                                 paddingHorizontal: 15,
                                                 paddingTop: 5
                                             }, styles.fontLight]}>
-                                                <Text style={styles.description}>{item.description.replace(/\*/g, '• ')}</Text>
+                                                <Text style={[styles.description,{fontSize:9}]}>{item.description.replace(/\*/g, '• ')}</Text>
                                             </View>
                                             <Text style={[{
                                                 fontSize: 12,
@@ -525,7 +539,7 @@ const {activeUser}=props
                                 </View>
                             </View>
 
-                            <Image src={FooterImage}
+                            <Image  fixed={true} src={FooterImage}
                                    style={{width: 130, height: 100, right: 0, bottom: 0, position: "absolute"}}/>
 
                         </Page>
