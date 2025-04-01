@@ -121,19 +121,31 @@ const styles = StyleSheet.create({
 const RenderPdf = (props) => {
 const {activeUser}=props
     const {list = []} = props;
-
     const groupedReports = useMemo(() => {
         if (!list || list.length === 0) return [];
-        const chunkSize = 5; // 5 days per week
-        let weeks = [];
-
-        for (let i = 0; i < list.length; i += chunkSize) {
-            const weekDates = list.slice(i, i + chunkSize);
-
-            weeks.push(weekDates);
+        const result = [];
+        let tempGroup = [];
+        for (let i = 0; i < list.length; i++) {
+            const entry = list[i];
+            const weekday = new Date(entry.date.seconds * 1000).toLocaleDateString('en-US', { weekday: "long" });
+            tempGroup.push(entry);
+            if (weekday === "Friday") {
+                if (list[i + 1]) {
+                    const nextWeekday = new Date(list[i + 1].date.seconds * 1000).toLocaleDateString('en-US', { weekday: "long" });
+                    if (nextWeekday === "Saturday") {
+                        tempGroup.push(list[i + 1]);
+                        i++;
+                    }
+                }
+                result.push([...tempGroup]);
+                tempGroup = [];
+            }
         }
-        console.log('Grouped Reports:', weeks);
-        return weeks;
+        if (tempGroup.length > 0) {
+            result.push([...tempGroup]);
+        }
+
+        return result
     }, [list])||[];
 
 
@@ -144,7 +156,7 @@ const {activeUser}=props
         let totalSeconds = items.reduce((sum, item) => {
             const decimalHours = item?.hours || 0;
             const hours = Math.floor(decimalHours);
-            const minutesDecimal = (decimalHours - hours) * 100; // Handle .30 as 30 minutes
+            const minutesDecimal = (decimalHours - hours) * 100;
             const minutes = Math.floor(minutesDecimal);
             const seconds = Math.round((minutesDecimal - minutes) * 60);
             return sum + (hours * 3600) + (minutes * 60) + seconds;
@@ -235,19 +247,7 @@ const {activeUser}=props
                             <View style={{width: "100%", height: 3, paddingHorizontal: 100}}>
                                 <View style={{width: "100%", height: 2, backgroundColor: "black"}}/>
                             </View>
-                            {/*<Table wrap={true}  fixed={true} style={{paddingHorizontal:80}}>*/}
-                            {/*    <TH>*/}
-                            {/*        <TD>Header 1</TD>*/}
-                            {/*        <TD>Header 2</TD>*/}
-                            {/*    </TH>*/}
-                            {/*    {Array.from({length:10}).map((index)=>*/}
-                            {/*        <TR fixed={true} key={index}>*/}
-                            {/*            <TD>@david.kucsai/react-pdf-table. This library is designed to be used with @react-pdf/renderer. The goal behind this library is to provide a declarative way of defining tables in a PDF. To get …</TD>*/}
-                            {/*            <TD>Data 2</TD>*/}
-                            {/*        </TR>*/}
 
-                            {/*    )}*/}
-                            {/*</Table>*/}
                             <View style={styles.content}>
                                 <View style={{
                                     width: "100%",
@@ -472,7 +472,7 @@ const {activeUser}=props
                                                 paddingHorizontal: 15,
                                                 paddingTop: 5
                                             }, styles.fontLight]}>
-                                                <Text style={[styles.description,{fontSize:9}]}>{item.description.replace(/\*/g, '• ')}</Text>
+                                                <Text style={[styles.description,{fontSize:11}]}>{item.description.replace(/\*/g, '• ')}</Text>
                                             </View>
                                             <Text style={[{
                                                 fontSize: 12,
