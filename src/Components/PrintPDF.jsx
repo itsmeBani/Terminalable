@@ -534,7 +534,7 @@ const {activeUser}=props
                                     </Text>
                                     <View style={{width: 200, height: 2,backgroundColor:"black",marginTop:20}}/>
                                     <Text style={{fontSize: 12,fontFamily:"TimesBold",paddingTop:10}}>
-                                        ZEUS VINCENT B. MENDOZA, MIT
+                                        DELIA R. CASILLAN, EdD
                                     </Text>
                                 </View>
                             </View>
